@@ -6,7 +6,6 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const productRoute=require('./routes/product.route')
 const cartRoute=require('./routes/cart.route')
-const cartController=require('./controller/cart.controller')
 
 mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true},
     function (err, db) {
