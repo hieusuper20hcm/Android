@@ -1,10 +1,7 @@
 const Cart = require('../model/cart.model')
-var countCart=0;
-var sumPrice=0;
 
 module.exports.index=async (req,res)=>{
     const carts = await Cart.find();
-    console.log(countCart);
     res.json()
 }
 
