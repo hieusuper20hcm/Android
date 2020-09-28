@@ -2,7 +2,7 @@ const Cart = require('../model/cart.model')
 
 module.exports.index=async (req,res)=>{
     const carts = await Cart.find();
-    res.json()
+    res.json(carts)
 }
 
 module.exports.addCart = async (req, res) => {
