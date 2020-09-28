@@ -1,8 +1,11 @@
 const Cart = require('../model/cart.model')
+var countCart=0;
+var sumPrice=0;
 
 module.exports.index=async (req,res)=>{
     const carts = await Cart.find();
-    res.json(carts)
+    console.log(countCart);
+    res.json()
 }
 
 module.exports.addCart = async (req, res) => {
@@ -25,4 +28,15 @@ module.exports.addCart = async (req, res) => {
         await Cart.create(req.body)
         res.json("Đặt hàng thành công");
     }
+}
+
+module.exports.deleteCart= async function(req,res){
+    //const query=[{'cart.productID':req.params.productID},{userId:req.signedCookies.userID}];
+    await Cart.deleteOne({productID:req.body.productID},(err) => {
+        if (err){
+            console.log(err);
+            return;
+        }     
+    })
+    res.json("Xóa hàng thành công")
 }
