@@ -2,9 +2,8 @@ const md5 = require('md5')
 const User=require('../model/user.model')
 
 module.exports.login=async function(req,res,next){
-    let email=req.body.email;
+    const email=req.body.email;
     const password=req.body.password;
-    console.log(email);
     const user= await User.findOne({email:email});
      if(!user){
          return res.json("Email không tồn tại")
