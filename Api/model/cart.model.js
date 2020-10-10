@@ -6,7 +6,8 @@ const cartSchema = new mongoose.Schema({
                 img: String,
                 count:Number,
                 size: String,
-                color: String
+                color: String,
+                createDate: { type: Date, default: Date.now }
         
 });
 const Cart = mongoose.model('Cart', cartSchema,'carts');
