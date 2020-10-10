@@ -7,11 +7,11 @@ module.exports.login=async function(req,res,next){
     console.log(email);
     const user= await User.findOne({email:email});
      if(!user){
-         res.json(["Email does not exist",{email:email}])
+         res.json("Email không tồn tại")
          return;
      }
      if(md5(password)!=user.password){
-        res.json({errors:"Password is wrong"})
+        res.json("Mật khẩu sai")
          return;
      }
      res.json("Đăng nhập thành công")
