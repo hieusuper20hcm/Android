@@ -11,5 +11,5 @@ module.exports.login=async function(req,res,next){
      if(md5(password)!=user.password){
         return res.json({msg: "Sai mật khẩu"})
      }
-     res.json({msg: "Đăng nhập thành công"})
+     res.json({msg: "Đăng nhập thành công",user:user})
 }
