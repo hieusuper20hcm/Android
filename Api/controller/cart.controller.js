@@ -11,15 +11,6 @@ module.exports.addCart = async (req, res) => {
                 {size:req.body.size},{color:req.body.color},
                 {userID:req.body.userID}];
     const cart=await Cart.findOne({$and:query});
-    let object={
-        productID:req.body.productID,
-        name:req.body.name,
-        price:req.body.price,
-        img:req.body.img,
-        count:req.body.count,
-        size:req.body.size,
-        color:req.body.color
-    }
     if(cartItem.length>0)
     {
        if(cart){
@@ -28,18 +19,12 @@ module.exports.addCart = async (req, res) => {
             res.json("Đặt hàng thành công");
        }
        else{
-            await Cart.create({
-                userID:  req.body.userID,
-                object
-            })
+            await Cart.create(req.body)
             res.json("Đặt hàng thành công");
        }
     }
     else{
-        await Cart.create({
-            userID:  req.body.userID,
-            object
-        })
+        await Cart.create(req.body)
         res.json("Đặt hàng thành công");
     }
 }
