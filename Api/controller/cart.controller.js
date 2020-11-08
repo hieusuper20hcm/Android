@@ -14,7 +14,7 @@ module.exports.addCart = async (req, res) => {
     if(cartItem.length>0)
     {
        if(cart){
-           let count=cart.count+req.body.count
+           let count=cart.count+Number(req.body.count)
             await Cart.updateMany({productID:req.body.productID},{count:count})
             res.json("Đặt hàng thành công");
        }
