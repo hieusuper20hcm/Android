@@ -1,4 +1,5 @@
 const Cart = require('../model/cart.model')
+const History=require('../model/history.model')
 
 module.exports.index=async (req,res)=>{
     const carts = await Cart.find();
@@ -16,16 +17,16 @@ module.exports.addCart = async (req, res) => {
        if(cart){
            let count=cart.count+Number(req.body.count)
             await Cart.updateMany({productID:req.body.productID},{count:count})
-            res.json("Đặt hàng thành công");
+            res.json("Đã thêm vào giỏ hàng");
        }
        else{
             await Cart.create(req.body)
-            res.json("Đặt hàng thành công");
+            res.json("Đã thêm vào giỏ hàng");
        }
     }
     else{
         await Cart.create(req.body)
-        res.json("Đặt hàng thành công");
+        res.json("Đã thêm vào giỏ hàng");
     }
 }
 
@@ -38,4 +39,22 @@ module.exports.deleteCart= async function(req,res){
         }     
     })
     res.json("Xóa hàng thành công")
+}
+
+module.exports.postIndex= async function(req,res){
+    const carts=await Cart.find({userID:req.body.userID})
+    console.log(carts)
+    let cartArr=carts.map(e=>{
+        return e
+    })
+
+    await History.create({
+        userID:  req.body.userID,
+        address:req.body.address,
+        phone:req.body.phone,
+        cart: cartArr
+            
+    })
+    await Cart.deleteMany({userID:req.body.userID})
+    res.send('Đặt hàng thành công')
 }
