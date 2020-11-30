@@ -2,7 +2,8 @@ require('dotenv').config();
 
 const express = require('express')
 const bodyParser = require('body-parser')
-const cors=require('cors');
+// const cors=require('cors');
+const socket=require('socket.io')
 
 const mongoose = require('mongoose')
 const productRoute=require('./routes/product.route')
@@ -21,7 +22,7 @@ mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true},
   let port=process.env.PORT || 3000
   
   const app = express()
-  app.use(cors())
+  // app.use(cors({credentials:true,origin:"http://192.168.11.133:5000"}))
   app.use('/', express.static('public'))
   
   app.use(bodyParser.json());
@@ -32,6 +33,14 @@ mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true},
   app.use('/login',authRoute)
   app.use('/user',userRoute)
   app.use('/history',historyRoute)
-  app.listen(port, () => {
+
+  const server=app.listen(port, () => {
       console.log('server running at ' + port)
     })
+  socket(server).on('connection',function(socket){
+      console.log(`Có người vừa kết nối, socketID: ${socket.id}`)
+      socket.on('join', function(userNickname) {
+
+        console.log(userNickname +" : has joined the chat "  )
+    });
+  })

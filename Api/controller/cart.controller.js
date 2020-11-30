@@ -43,7 +43,6 @@ module.exports.deleteCart= async function(req,res){
 
 module.exports.postIndex= async function(req,res){
     const carts=await Cart.find({userID:req.body.userID})
-    console.log(carts)
     let cartArr=carts.map(e=>{
         return e
     })

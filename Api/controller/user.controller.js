@@ -11,5 +11,4 @@ module.exports.postCreate= async function(req,res){
         await User.create(req.body);
         res.json({msg:'Đăng ký thành công'})
     }
-
 }
