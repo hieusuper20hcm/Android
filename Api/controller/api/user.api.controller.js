@@ -12,3 +12,11 @@ module.exports.postCreate= async function(req,res){
         res.json({msg:'Đăng ký thành công'})
     }
 }
+
+module.exports.updatePassword=async function(req,res){
+
+    await User.updateOne({email:req.body.email}, {password:md5(req.body.password)}, function(err,res) {
+        if (err) return res.json({msg: err});        
+    });
+    res.json({msg:'Thay đổi mật khẩu thành công'})
+}

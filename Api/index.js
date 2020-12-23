@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 var upload = require('express-fileupload');
-// const cors=require('cors');
+const cors=require('cors');
 const socket=require('socket.io')
 
 const mongoose = require('mongoose')
@@ -38,8 +38,9 @@ const likeRouteAPI=require('./routes/api/like.api.route');
  
 
 let port=process.env.PORT || 3000
+app.use(cors())
   
-  // app.use(cors({credentials:true,origin:"http://192.168.11.133:5000"}))
+
 
   app.use('/', express.static('public'))
   app.use(upload());
@@ -61,7 +62,6 @@ let port=process.env.PORT || 3000
   app.use('/api/history',historyRouteAPI)
   app.use('/api/like',likeRouteAPI)
 
-
   const server=app.listen(port, () => {
       console.log('server running at ' + port)
     })
@@ -72,11 +72,11 @@ let port=process.env.PORT || 3000
     // console.log(`Có người vừa kết nối, socketID: ${socket.id}`)
 
     //Đầu tiên client sẽ gửi data lên server với Key Order
-    //server on để nhận dữ liệu với Key Order
+    //server on để nhận dữ liệu với Key là Order
     socket.on('Order', (data)=> {
       console.log(data)
       
-      //Server nhận để gửi lên view của Web với key "web nhan", value: data
+      //Sau đó Server gửi dữ liệu lên view của Web với key "web nhan", value: data
       io.sockets.emit('web nhan',{data:data})
     });
 

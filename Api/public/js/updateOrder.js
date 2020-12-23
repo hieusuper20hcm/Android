@@ -11,5 +11,6 @@ socket.on('web nhan', function(data) {
             location.reload()
         }, 2000);
 
+    //Sau đó ta sẽ import file này nào view
 });
 

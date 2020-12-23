@@ -6,4 +6,6 @@ const router = express.Router()
 
 router.post('/create', userController.postCreate);
 
+router.post('/update', userController.updatePassword);
+
 module.exports = router

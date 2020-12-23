@@ -3,7 +3,6 @@ const {google}=require('googleapis')
 let content='';
 const Cart=require('./model/cart.model')
 const User=require('./model/user.model')
-  
 
 module.exports.contentMail=async function(req,res,next){
     const carts=await Cart.find({userID:req.body.userID})
@@ -37,65 +36,67 @@ module.exports.contentOTP=async function(req,res,next){
     next();
 }
 
+module.exports.sendMail=async function(req,res,next){
+    const option = {
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL, // email hoặc username
+            pass: process.env.PASSWORD // password
+        }
+    };
+    
+    var transporter = nodemailer.createTransport(option);
+    
+    const mail = {
+        from: process.env.EMAIL, // Địa chỉ email của người gửi
+        to: req.body.email, // Địa chỉ email của người gửi
+        subject: 'Thông tin từ shop Respresent', // Tiêu đề mail
+        html: content
+    };
+
+    await transporter.sendMail(mail, function(error, info) {
+        if (error) { // nếu có lỗi
+            return res.json({msg:error})
+        } else { //nếu thành công
+            // console.log(info)
+        }
+    });
+
+    res.json({msg:'Vui lòng kiểm tra mail để lấy mã OTP'})
+
+}
+
+
 // module.exports.sendMail=async function(req,res,next){
-//     const transporter = nodemailer.createTransport({
-//         host: 'smtp.ethereal.email',
-//         port: 587,
+//     const oAuth2Client=new google.auth.OAuth2(process.env.CLIENT_ID,process.env.CLIENT_SECRET,process.env.REDIRECT_URI)
+//     oAuth2Client.setCredentials({refresh_token: process.env.REFRESH_TOKEN})
+//     let accessToken=await oAuth2Client.getAccessToken()
+//     console.log(accessToken)
+//     let transporter = nodemailer.createTransport({
+//         service: 'gmail',
 //         auth: {
-//             user: 'gia.mcdermott90@ethereal.email',
-//             pass: 'G7E9TUAdjuCr22u4mG'
+//             type:'OAuth2',
+//             user:process.env.EMAIL,
+//             clientId:process.env.CLIENT_ID,            
+//             refresh_token:process.env.REFRESH_TOKEN,
+//             accessToken:process.env.ACCESS_TOKEN
 //         }
 //     });
-
-//     const mail = {
+     
+//         const mail = {
 //                 from: process.env.EMAIL, // Địa chỉ email của người gửi
 //                 to: req.body.email, // Địa chỉ email của người gửi
 //                 subject: 'Thông tin từ shop Respresent', // Tiêu đề mail
 //                 html: content
-//     };
-
-//             await transporter.sendMail(mail, function(error, info) {
+//         };
+//             //Tiến hành gửi email
+//         await transporter.sendMail(mail, function(error, info) {
 //                 if (error) { // nếu có lỗi
-//                    return res.json({msg:error})
+//                     return res.json({msg:error})
 //                 } else { //nếu thành công
 //                     console.log(info)
 //                 }
-//             });
+//         });
 //         res.json({msg:'Vui lòng kiểm tra mail để lấy mã OTP'})
-
 // }
-
-
-module.exports.sendMail=async function(req,res,next){
-    const oAuth2Client=new google.auth.OAuth2(process.env.CLIENT_ID,process.env.CLIENT_SECRET,process.env.REDIRECT_URI)
-    oAuth2Client.setCredentials({refresh_token: process.env.REFRESH_TOKEN})
-    let accessToken=await oAuth2Client.getAccessToken()
-    console.log(accessToken)
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            type:'OAuth2',
-            user:process.env.EMAIL,
-            clientId:process.env.CLIENT_ID,            
-            refresh_token:process.env.REFRESH_TOKEN,
-            accessToken:process.env.ACCESS_TOKEN
-        }
-    });
-     
-        const mail = {
-                from: process.env.EMAIL, // Địa chỉ email của người gửi
-                to: req.body.email, // Địa chỉ email của người gửi
-                subject: 'Thông tin từ shop Respresent', // Tiêu đề mail
-                html: content
-        };
-            //Tiến hành gửi email
-        await transporter.sendMail(mail, function(error, info) {
-                if (error) { // nếu có lỗi
-                    return res.json({msg:error})
-                } else { //nếu thành công
-                    console.log(info)
-                }
-        });
-        res.json({msg:'Vui lòng kiểm tra mail để lấy mã OTP'})
-}
 
